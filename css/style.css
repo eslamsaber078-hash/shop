@@ -1378,6 +1378,22 @@ ol {
   animation: pulse 1.8s infinite;
 }
 
+.gallery .live-row {
+  justify-content: center;
+  margin-top: 14px;
+  padding: 9px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  background: var(--cream);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.gallery .live-row strong {
+  color: var(--ink);
+  font-weight: 800;
+}
+
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(46, 125, 88, 0.35); }
   70% { box-shadow: 0 0 0 6px rgba(46, 125, 88, 0); }

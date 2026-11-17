@@ -44,7 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   qs('#productOld').textContent = formatPrice(product.oldPrice);
   qs('#saveChip').textContent = 'وفّر ' + formatPrice(product.oldPrice - product.price);
   qs('#galleryBadge').textContent = 'خصم ' + discountPercent(product) + '%';
-  qs('#viewersCount').textContent = product.viewers;
+  const viewerEl = qs('#viewersCount');
+  let viewerCount = Math.min(100, Math.max(30, Number(product.viewers) || 30));
+  viewerEl.textContent = String(viewerCount);
   qs('#stockCount').textContent = product.stock;
   qs('#stockFill').style.width = Math.min(100, (product.stock / 40) * 100) + '%';
 
@@ -306,9 +308,40 @@ document.addEventListener('DOMContentLoaded', () => {
     success.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 
-  setInterval(() => {
-    const change = Math.floor(Math.random() * 5) - 2;
-    product.viewers = Math.min(45, Math.max(8, product.viewers + change));
-    qs('#viewersCount').textContent = product.viewers;
-  }, 28000);
+  const visitorId = (() => {
+    try {
+      const existing = localStorage.getItem('ds_visitor_v1');
+      if (/^[A-Za-z0-9_-]{8,64}$/.test(existing || '')) return existing;
+      const created = 'v-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem('ds_visitor_v1', created);
+      return created;
+    } catch (error) {
+      return 'v-' + Math.random().toString(36).slice(2, 12);
+    }
+  })();
+
+  const setViewerCount = (value) => {
+    const next = Math.min(100, Math.max(30, Math.round(Number(value) || 30)));
+    if (next === viewerCount) return;
+    viewerCount = next;
+    viewerEl.textContent = String(next);
+  };
+
+  const pingViewers = async () => {
+    try {
+      const response = await fetch('/api/presence', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ productId: product.id, clientId: visitorId })
+      });
+      if (!response.ok) throw new Error('presence');
+      const data = await response.json();
+      setViewerCount(data.count);
+    } catch (error) {
+      setViewerCount(viewerCount + Math.floor(Math.random() * 7) - 3);
+    }
+  };
+
+  pingViewers();
+  setInterval(pingViewers, 15000);
 });

@@ -32,6 +32,36 @@ const MIME = {
 
 const sessions = new Map();
 
+const LIVE_MIN = 30;
+const LIVE_MAX = 100;
+const LIVE_TTL = 30 * 1000;
+const liveViewers = new Map();
+const livePulse = new Map();
+
+function trackViewer(productId, clientId) {
+  const now = Date.now();
+  for (const [pid, clients] of liveViewers) {
+    for (const [id, seen] of clients) {
+      if (now - seen > LIVE_TTL) clients.delete(id);
+    }
+    if (!clients.size) liveViewers.delete(pid);
+  }
+
+  let clients = liveViewers.get(productId);
+  if (!clients) {
+    clients = new Map();
+    liveViewers.set(productId, clients);
+  }
+  if (clients.has(clientId) || clients.size < 400) clients.set(clientId, now);
+
+  let pulse = livePulse.get(productId);
+  if (pulse == null) pulse = LIVE_MIN + crypto.randomInt(LIVE_MAX - LIVE_MIN + 1);
+  pulse = Math.min(LIVE_MAX, Math.max(LIVE_MIN, pulse + crypto.randomInt(7) - 3));
+  livePulse.set(productId, pulse);
+
+  return Math.min(LIVE_MAX, Math.max(LIVE_MIN, pulse + clients.size));
+}
+
 const readJson = async (file, fallback) => {
   try {
     return JSON.parse(await fsp.readFile(file, 'utf8'));
@@ -261,6 +291,17 @@ function normalizeStatus(value) {
 
 async function handleApi(req, res, pathname) {
   const method = req.method;
+
+  if (method === 'POST' && pathname === '/api/presence') {
+    const body = await readBody(req, 4 * 1024);
+    const productId = cleanText(body.productId, 60);
+    const clientId = String(body.clientId || '');
+    if (!/^[A-Za-z0-9_-]{8,64}$/.test(clientId)) return fail(res, 400, 'معرّف الزائر غير صحيح');
+    const catalog = await getCatalog();
+    const known = catalog && Array.isArray(catalog.products) && catalog.products.some((product) => product.id === productId);
+    if (!known) return fail(res, 404, 'المنتج غير موجود');
+    return sendJson(res, 200, { count: trackViewer(productId, clientId) });
+  }
 
   if (method === 'POST' && pathname === '/api/orders') {
     const body = await readBody(req, 256 * 1024);
