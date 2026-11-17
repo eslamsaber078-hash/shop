@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>المنتج | D STORE</title>
+  <meta name="description" content="جاكيتات وملابس رجالي بأسعار في المتناول. شحن لكل محافظات مصر والدفع عند الاستلام.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/cairo-var-ar.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/cairo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <meta property="og:title" content="D STORE | ملابس رجالي">
+  <meta property="og:type" content="product">
+  <meta property="og:image" content="assets/img/hero.jpg">
+</head>
+<body class="page-product has-dock">
+
+  <div class="announce">شحن مجاني للطلبات التي تتجاوز 1500 جنيه — الدفع عند الاستلام</div>
+
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <button class="icon-btn menu-toggle" type="button" data-open-menu aria-label="فتح القائمة" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <a class="logo" href="index.html" aria-label="D STORE — الصفحة الرئيسية">
+        <span class="logo-mark">D</span>
+        <span class="logo-text">D STORE<small>ملابس رجالي</small></span>
+      </a>
+      <nav class="main-nav" aria-label="القائمة الرئيسية">
+        <a href="index.html">الرئيسية</a>
+        <a href="index.html#products" class="is-active">المنتجات</a>
+        <a href="index.html?cat=jackets">جاكيتات</a>
+        <a href="index.html?cat=coats">بالطو</a>
+        <a href="policies.html">الشحن والاستبدال</a>
+        <a href="#" data-whatsapp target="_blank" rel="noopener">تواصل معنا</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" type="button" data-open-search aria-label="بحث">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        </button>
+        <button class="icon-btn cart-btn" type="button" data-open-cart aria-label="سلة المشتريات">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12h-11l-1-12Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+          <span class="cart-count" data-cart-count hidden>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="panel mobile-menu" id="mobileMenu" aria-hidden="true" role="dialog" aria-label="القائمة">
+    <div class="panel-head">
+      <h2>القائمة</h2>
+      <button class="panel-close" type="button" data-close aria-label="قفل">&times;</button>
+    </div>
+    <nav>
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#products">كل المنتجات</a>
+      <a href="index.html?cat=jackets">جاكيتات</a>
+      <a href="index.html?cat=coats">بالطو</a>
+      <a href="index.html?cat=hoodies">هودي</a>
+      <a href="index.html?cat=shirts">قمصان</a>
+      <a href="policies.html">الشحن والاستبدال</a>
+      <a href="#" data-whatsapp>تواصل معنا</a>
+    </nav>
+    <div class="mobile-menu-foot">
+      للاستفسار
+      <a href="#" data-phone>01012345678</a>
+      يوميًا من 10 صباحًا إلى 10 مساءً
+    </div>
+  </div>
+
+  <aside class="panel cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="سلة المشتريات">
+    <div class="panel-head">
+      <h2>سلة المشتريات</h2>
+      <button class="panel-close" type="button" data-close aria-label="قفل">&times;</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-foot" id="cartFoot" hidden>
+      <div class="cart-total"><span>الإجمالي</span><strong id="cartSubtotal">0 ج.م</strong></div>
+      <p class="cart-note" id="cartNote"></p>
+      <a href="checkout.html" class="btn">إتمام الطلب</a>
+      <a href="index.html#products" class="link-center" data-close>متابعة التسوق</a>
+    </div>
+  </aside>
+
+  <div class="panel search-modal" id="searchModal" aria-hidden="true" role="dialog" aria-label="بحث">
+    <div class="search-box">
+      <div class="search-head">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <input id="searchInput" type="search" placeholder="ابحث عن جاكيت، بالطو، قميص..." aria-label="بحث في المنتجات" autocomplete="off">
+        <button class="panel-close" type="button" data-close aria-label="قفل">&times;</button>
+      </div>
+      <div class="search-results" id="searchResults"></div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <nav class="crumbs" aria-label="مسار الصفحة">
+      <a href="index.html">الرئيسية</a>
+      <span>/</span>
+      <a href="index.html#products" id="crumbCategory">المنتجات</a>
+      <span>/</span>
+      <span id="crumbName"></span>
+    </nav>
+
+    <div class="product-layout">
+      <div class="gallery">
+        <div class="gallery-main">
+          <img id="mainImage" src="assets/img/products/leather-1.jpg" alt="صورة المنتج" width="900" height="1125">
+          <span class="gallery-badge" id="galleryBadge"></span>
+          <button class="gallery-arrow gallery-prev" type="button" id="galleryPrev" aria-label="الصورة السابقة">&lsaquo;</button>
+          <button class="gallery-arrow gallery-next" type="button" id="galleryNext" aria-label="الصورة التالية">&rsaquo;</button>
+        </div>
+        <div class="thumbs" id="thumbs"></div>
+      </div>
+
+      <div class="product-info">
+        <p class="product-cat" id="productCat"></p>
+        <h1 id="productName"></h1>
+        <div class="rating-row">
+          <span class="stars" id="ratingStars"></span>
+          <span id="ratingValue"></span>
+          <a href="#reviews" id="reviewsLink"></a>
+        </div>
+        <div class="product-price">
+          <span class="price" id="productPrice"></span>
+          <span class="price-old" id="productOld"></span>
+          <span class="save-chip" id="saveChip"></span>
+        </div>
+        <p class="live-row">
+          <span class="live-dot"></span>
+          <span><strong id="viewersCount">0</strong> شخصًا يشاهدون المنتج الآن</span>
+        </p>
+        <div class="stock-block">
+          <div class="stock-labels">
+            <span>المخزون</span>
+            <span>المتبقي <strong id="stockCount">0</strong> قطعة</span>
+          </div>
+          <div class="stock-track"><div class="stock-fill" id="stockFill"></div></div>
+        </div>
+
+        <div class="option-group">
+          <div class="option-label"><span>اللون: <strong id="colorLabel"></strong></span></div>
+          <div class="swatches" id="swatches"></div>
+        </div>
+
+        <div class="option-group">
+          <div class="option-label">
+            <span>المقاس: <strong id="sizeLabel"></strong></span>
+            <button class="size-guide-btn" type="button" data-open-size>دليل المقاسات</button>
+          </div>
+          <div class="sizes" id="sizes"></div>
+          <p class="size-hint">
+            <span id="sizeHint"></span>
+            <span>إذا كان مقاسك بين مقاسين فاختر الأكبر</span>
+          </p>
+        </div>
+
+        <div class="buy-row">
+          <div class="qty">
+            <button type="button" id="qtyMinus" aria-label="تقليل الكمية">&minus;</button>
+            <span id="qtyValue">1</span>
+            <button type="button" id="qtyPlus" aria-label="زيادة الكمية">+</button>
+          </div>
+          <button class="btn" type="button" id="buyNow">اطلب الآن — الدفع عند الاستلام</button>
+        </div>
+        <div class="sub-actions">
+          <button class="btn btn-outline" type="button" id="addToCart">أضف للسلة</button>
+        </div>
+
+        <div class="delivery-box">
+          <div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h10v9H3z"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>
+            <span>التوصيل من 2 إلى 4 أيام عمل</span>
+          </div>
+          <div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 10h18"/><circle cx="12" cy="15" r="1.6"/></svg>
+            <span>الدفع نقدًا للمندوب عند الاستلام</span>
+          </div>
+          <div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 6v5h-5"/></svg>
+            <span>استبدال خلال 14 يومًا</span>
+          </div>
+        </div>
+
+        <ul class="highlights" id="highlights"></ul>
+      </div>
+    </div>
+
+    <section class="product-section" id="bundleSection" hidden>
+      <h2>اطلبه مع منتج آخر ووفّر</h2>
+      <div class="bundle" id="bundleBox"></div>
+    </section>
+
+    <section class="product-section">
+      <div class="content-cols">
+        <div>
+          <h2>الوصف</h2>
+          <div class="description" id="description"></div>
+        </div>
+        <div>
+          <h2>المواصفات</h2>
+          <table class="specs">
+            <tbody id="specsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-section" id="reviews">
+      <h2>آراء العملاء</h2>
+      <div class="reviews-summary">
+        <span class="rating-big" id="reviewBig"></span>
+        <span class="stars" id="reviewStars"></span>
+        <div><small id="reviewCount"></small></div>
+      </div>
+      <div class="reviews-grid" id="reviewsGrid"></div>
+    </section>
+
+    <section class="product-section">
+      <h2>أسئلة شائعة</h2>
+      <div class="faq" id="faq"></div>
+    </section>
+
+    <section class="product-section" id="order">
+      <div class="order-head">
+        <h2>أكمل طلبك</h2>
+        <p>املأ البيانات التالية وسنتواصل معك لتأكيد الطلب. الدفع عند الاستلام.</p>
+      </div>
+
+      <div class="order-box" id="orderBox">
+        <div class="form-top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10" rx="2"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10"/></svg>
+          <span>تُستخدم بياناتك لتأكيد الطلب فقط</span>
+        </div>
+        <form id="orderForm" novalidate>
+          <div class="form-body">
+            <div class="field">
+              <label for="orderName">الاسم بالكامل</label>
+              <input id="orderName" name="name" type="text" placeholder="مثال: محمد أحمد" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="orderPhone">رقم الموبايل (واتساب)</label>
+              <input id="orderPhone" name="phone" type="tel" inputmode="numeric" placeholder="01xxxxxxxxx" autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="orderGov">المحافظة</label>
+              <select id="orderGov" name="governorate">
+                <option value="">اختر المحافظة</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="orderNotes">ملاحظات (اختياري)</label>
+              <input id="orderNotes" name="notes" type="text" placeholder="مثال: يرجى الاتصال بعد الساعة 5">
+            </div>
+            <div class="field field-full">
+              <label for="orderAddress">العنوان بالتفصيل</label>
+              <textarea id="orderAddress" name="address" placeholder="المدينة، الشارع، رقم العمارة والشقة"></textarea>
+            </div>
+          </div>
+
+          <div class="order-summary">
+            <div class="sum-row"><span>المنتج</span><strong id="sumItem"></strong></div>
+            <div class="sum-row"><span>الكمية</span><span id="sumQty"></span></div>
+            <div class="sum-row"><span>سعر المنتج</span><span id="sumPrice"></span></div>
+            <div class="sum-row"><span>الشحن</span><span id="sumShipping">اختر المحافظة</span></div>
+            <div class="sum-row total"><span>الإجمالي</span><strong id="sumTotal"></strong></div>
+            <p class="sum-note" id="sumFreeNote" hidden>الشحن مجاني على هذا الطلب.</p>
+          </div>
+
+          <div class="order-submit">
+            <button type="submit" class="btn btn-lg">تأكيد الطلب</button>
+            <p class="order-submit-note">بالضغط على تأكيد الطلب لن تدفع أي مبلغ الآن.</p>
+          </div>
+        </form>
+      </div>
+
+      <div class="success-box" id="orderSuccess" hidden>
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+        </div>
+        <h2>تم استلام طلبك</h2>
+        <p>سنتواصل معك على الرقم الذي أدخلته لتأكيد الطلب.</p>
+        <div class="order-number">رقم الطلب: <strong id="successNumber"></strong></div>
+        <div class="success-summary">
+          <div id="successItems"></div>
+          <div class="summary-item"><span>الشحن</span><span id="successShipping"></span></div>
+          <div class="summary-item"><span><strong>الإجمالي</strong></span><strong id="successTotal"></strong></div>
+        </div>
+        <div class="success-actions">
+          <a href="#" class="btn btn-wa" id="successWhatsapp" target="_blank" rel="noopener">أرسل الطلب عبر واتساب</a>
+          <a href="index.html" class="btn btn-outline">متابعة التسوق</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-section">
+      <h2>منتجات أخرى</h2>
+      <div class="products-grid" id="moreProducts"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="index.html" aria-label="D STORE">
+            <span class="logo-mark">D</span>
+            <span class="logo-text">D STORE<small>ملابس رجالي</small></span>
+          </a>
+          <p>ملابس رجالي بأسعار في المتناول. نشحن إلى جميع محافظات مصر والدفع عند الاستلام.</p>
+        </div>
+        <div class="footer-col">
+          <h3>المتجر</h3>
+          <a href="index.html">الرئيسية</a>
+          <a href="index.html#products">كل المنتجات</a>
+          <a href="index.html?cat=jackets">جاكيتات</a>
+          <a href="index.html?cat=coats">بالطو</a>
+        </div>
+        <div class="footer-col">
+          <h3>المساعدة</h3>
+          <a href="policies.html#shipping">الشحن والتوصيل</a>
+          <a href="policies.html#returns">الاستبدال والاسترجاع</a>
+          <a href="policies.html#sizes">دليل المقاسات</a>
+          <a href="#" data-whatsapp>تواصل معنا</a>
+        </div>
+        <div class="footer-col">
+          <h3>تواصل معنا</h3>
+          <span>يوميًا من 10 صباحًا إلى 10 مساءً</span>
+          <a href="#" data-phone>01012345678</a>
+          <a href="#" data-whatsapp>واتساب</a>
+          <span>القاهرة، مصر</span>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> D STORE. جميع الحقوق محفوظة.</span>
+        <span class="footer-pay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M3 10h18"/><circle cx="12" cy="15" r="1.6"/></svg>
+          الدفع عند الاستلام
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sticky-buy" id="stickyBuy">
+    <div class="sticky-price">
+      <strong id="stickyPrice"></strong>
+      <span id="stickyOld"></span>
+    </div>
+    <button class="btn" type="button" id="stickyOrder">اطلب الآن</button>
+  </div>
+
+  <div class="modal" id="sizeModal" aria-hidden="true" role="dialog" aria-label="دليل المقاسات">
+    <div class="modal-head">
+      <h3>دليل المقاسات</h3>
+      <button class="panel-close" type="button" data-close aria-label="قفل">&times;</button>
+    </div>
+    <div class="modal-body">
+      <table class="size-table">
+        <thead>
+          <tr><th>المقاس</th><th>الوزن المناسب</th></tr>
+        </thead>
+        <tbody id="sizeTableBody"></tbody>
+      </table>
+      <p class="modal-note">المقاسات تقريبية. إذا كان مقاسك بين مقاسين، فاختر الأكبر. ويمكنك الاستبدال خلال 14 يومًا إذا لم يناسبك المقاس.</p>
+    </div>
+  </div>
+
+  <nav class="mobile-dock" aria-label="تنقل سريع">
+    <a class="mobile-dock-item is-active" href="index.html#products">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg>
+      <span>المتجر</span>
+    </a>
+    <button class="mobile-dock-item" type="button" data-open-cart aria-label="سلة المشتريات">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8h13l-1 12h-11l-1-12Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+      <span>السلة</span>
+      <span class="cart-count" data-cart-count hidden>0</span>
+    </button>
+    <button class="mobile-dock-item" type="button" data-open-search aria-label="بحث">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <span>البحث</span>
+    </button>
+  </nav>
+
+  <div class="overlay" id="overlay" hidden data-close></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/product.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+data/auth.json
+data/orders.json
+node_modules/
+*.log
+.DS_Store
+Thumbs.db

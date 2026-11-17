@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة التحكم | D STORE</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/cairo-var-ar.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/cairo-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+  <div class="loading-view" id="loadingView">جاري تحميل لوحة التحكم...</div>
+
+  <div class="login-view" id="loginView" hidden>
+    <div class="login-card">
+      <div class="login-brand">
+        <span class="logo-mark">D</span>
+        <span class="logo-text" id="loginBrand">D STORE<small>ملابس رجالي</small></span>
+      </div>
+      <h1>لوحة التحكم</h1>
+      <p>سجّل الدخول لإدارة المنتجات والطلبات وإعدادات المتجر.</p>
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="loginPassword">كلمة السر</label>
+          <input id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="أدخل كلمة السر">
+          <span class="field-error" id="loginError" hidden></span>
+        </div>
+        <button class="btn btn-lg login-btn" type="submit" id="loginSubmit">دخول</button>
+      </form>
+      <a class="login-back" href="index.html">العودة إلى المتجر</a>
+    </div>
+  </div>
+
+  <div class="admin-shell" id="adminApp" hidden>
+    <aside class="admin-side">
+      <div class="admin-brand">
+        <span class="logo-mark" id="adminMark">D</span>
+        <span class="logo-text" id="adminBrand">D STORE<small>لوحة التحكم</small></span>
+      </div>
+      <nav class="admin-nav" aria-label="أقسام لوحة التحكم">
+        <button type="button" class="admin-nav-item is-active" data-tab="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1"/><rect x="13.5" y="3.5" width="7" height="7" rx="1"/><rect x="3.5" y="13.5" width="7" height="7" rx="1"/><rect x="13.5" y="13.5" width="7" height="7" rx="1"/></svg>
+          نظرة عامة
+        </button>
+        <button type="button" class="admin-nav-item" data-tab="products">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>
+          المنتجات
+          <span class="nav-count" id="navProducts">0</span>
+        </button>
+        <button type="button" class="admin-nav-item" data-tab="orders">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h12v17l-3-2-3 2-3-2-3 2v-17Z"/><path d="M9 8h6M9 12h6"/></svg>
+          الطلبات
+          <span class="nav-count" id="navOrders">0</span>
+        </button>
+        <button type="button" class="admin-nav-item" data-tab="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+          إعدادات المتجر
+        </button>
+        <button type="button" class="admin-nav-item" data-tab="backup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3Z"/><path d="M4 7.5v9c0 1.7 3.6 3 8 3s8-1.3 8-3v-9"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+          نسخة احتياطية
+        </button>
+      </nav>
+      <div class="admin-side-foot">
+        <a href="index.html" target="_blank" rel="noopener">عرض المتجر</a>
+        <button type="button" id="logoutBtn">تسجيل خروج</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-top">
+        <div>
+          <h1 id="pageTitle">نظرة عامة</h1>
+          <p id="pageSubtitle">ملخص المتجر والطلبات</p>
+        </div>
+        <div class="admin-top-actions" id="topActions"></div>
+      </header>
+
+      <div class="admin-content">
+        <section class="admin-view" id="view-overview">
+          <div class="stats-grid" id="statsGrid"></div>
+          <div class="admin-cols">
+            <div class="admin-card">
+              <div class="admin-card-head">
+                <h2>آخر الطلبات</h2>
+                <button type="button" class="text-btn" data-goto="orders">كل الطلبات</button>
+              </div>
+              <div class="table-wrap">
+                <table class="admin-table">
+                  <thead><tr><th>الطلب</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
+                  <tbody id="recentOrdersBody"></tbody>
+                </table>
+              </div>
+              <div class="admin-empty" id="recentOrdersEmpty" hidden>لا توجد طلبات بعد.</div>
+            </div>
+            <div class="admin-card">
+              <div class="admin-card-head"><h2>منتجات أوشكت على النفاد</h2></div>
+              <ul class="low-stock" id="lowStockList"></ul>
+              <div class="admin-empty" id="lowStockEmpty" hidden>جميع المنتجات متوفرة بكميات كافية.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="admin-view" id="view-products" hidden>
+          <div class="toolbar">
+            <input id="productSearch" class="admin-input" type="search" placeholder="ابحث باسم المنتج...">
+            <div class="toolbar-actions">
+              <select id="productCategoryFilter" class="admin-input"></select>
+              <button type="button" class="btn" id="newProductBtn">+ إضافة منتج</button>
+            </div>
+          </div>
+          <div class="admin-card table-card">
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>المنتج</th><th>التصنيف</th><th>السعر</th><th>المخزون</th><th>المشاهدين</th><th></th></tr></thead>
+                <tbody id="productsTableBody"></tbody>
+              </table>
+            </div>
+            <div class="admin-empty" id="productsEmpty" hidden>لا توجد منتجات مطابقة.</div>
+          </div>
+        </section>
+
+        <section class="admin-view" id="view-editor" hidden>
+          <form id="productForm" novalidate>
+            <div class="editor-grid">
+              <div class="admin-card">
+                <h2 class="card-title">البيانات الأساسية</h2>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="pfName">اسم المنتج</label>
+                    <input id="pfName" name="name" type="text" placeholder="مثال: جاكيت جلد طبيعي">
+                  </div>
+                  <div class="field">
+                    <label for="pfCategory">التصنيف</label>
+                    <select id="pfCategory" name="category"></select>
+                  </div>
+                  <div class="field">
+                    <label for="pfBadge">الشارة (اختياري)</label>
+                    <input id="pfBadge" name="badge" type="text" placeholder="مثال: الأكثر طلبًا أو جديد">
+                  </div>
+                  <div class="field">
+                    <label for="pfShort">وصف قصير</label>
+                    <input id="pfShort" name="short" type="text" placeholder="سطر واحد يظهر في البحث وفي الباقة">
+                  </div>
+                </div>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">السعر</h2>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="pfPrice">سعر البيع (ج.م)</label>
+                    <input id="pfPrice" name="price" type="number" min="1" step="1">
+                  </div>
+                  <div class="field">
+                    <label for="pfOldPrice">السعر قبل الخصم</label>
+                    <input id="pfOldPrice" name="oldPrice" type="number" min="1" step="1">
+                  </div>
+                  <div class="field">
+                    <label for="pfBundleProduct">الباقة (اختياري)</label>
+                    <select id="pfBundleProduct" name="bundleProduct"></select>
+                  </div>
+                  <div class="field">
+                    <label for="pfBundlePrice">سعر المنتج الآخر في الباقة</label>
+                    <input id="pfBundlePrice" name="bundlePrice" type="number" min="0" step="1">
+                  </div>
+                </div>
+                <p class="hint">عند اختيار باقة، سيظهر للعميل إمكانية إضافة المنتجين معًا بسعر أقل.</p>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">المخزون والظهور</h2>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="pfStock">المخزون</label>
+                    <input id="pfStock" name="stock" type="number" min="0" step="1">
+                  </div>
+                  <div class="field">
+                    <label for="pfViewers">عدد المشاهدين</label>
+                    <input id="pfViewers" name="viewers" type="number" min="0" step="1">
+                  </div>
+                  <div class="field">
+                    <label for="pfRating">التقييم (من 5)</label>
+                    <input id="pfRating" name="rating" type="number" min="0" max="5" step="0.1">
+                  </div>
+                  <div class="field">
+                    <label for="pfReviewsCount">عدد التقييمات</label>
+                    <input id="pfReviewsCount" name="reviewsCount" type="number" min="0" step="1">
+                  </div>
+                </div>
+                <p class="hint">إذا كان التقييم أو عدد التقييمات صفرًا، فسيختفي قسم التقييمات من صفحة المنتج.</p>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">صور المنتج</h2>
+                <p class="hint">أول صورة هي الصورة الرئيسية. ارفع صورك أو استخدم مسار صورة موجود في المجلد.</p>
+                <div class="image-list" id="imageList"></div>
+                <div class="image-actions">
+                  <label class="btn btn-outline upload-btn">
+                    رفع صور
+                    <input id="imageUpload" type="file" accept="image/jpeg,image/png,image/webp" multiple hidden>
+                  </label>
+                  <button type="button" class="text-btn" id="addImagePathBtn">إضافة مسار صورة</button>
+                  <span class="upload-state" id="uploadState" hidden>جارٍ رفع الصور...</span>
+                </div>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">الألوان</h2>
+                <div class="rows" id="colorRows"></div>
+                <button type="button" class="text-btn add-row" id="addColorBtn">+ إضافة لون</button>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">المقاسات</h2>
+                <div class="rows" id="sizeRows"></div>
+                <button type="button" class="text-btn add-row" id="addSizeBtn">+ إضافة مقاس</button>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">المحتوى</h2>
+                <div class="field">
+                  <label for="pfHighlights">المميزات (كل سطر ميزة)</label>
+                  <textarea id="pfHighlights" name="highlights" rows="4"></textarea>
+                </div>
+                <div class="field">
+                  <label for="pfDescription">الوصف (كل سطر فقرة)</label>
+                  <textarea id="pfDescription" name="description" rows="6"></textarea>
+                </div>
+              </div>
+
+              <div class="admin-card">
+                <h2 class="card-title">المواصفات</h2>
+                <div class="rows" id="specRows"></div>
+                <button type="button" class="text-btn add-row" id="addSpecBtn">+ إضافة مواصفة</button>
+              </div>
+            </div>
+
+            <div class="editor-foot">
+              <button type="submit" class="btn btn-lg" id="saveProductBtn">حفظ المنتج</button>
+              <button type="button" class="btn btn-outline btn-lg" id="cancelEditBtn">إلغاء</button>
+              <span class="editor-note" id="editorNote"></span>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-view" id="view-orders" hidden>
+          <div class="toolbar">
+            <input id="orderSearch" class="admin-input" type="search" placeholder="ابحث برقم الطلب أو اسم العميل أو الهاتف...">
+            <div class="toolbar-actions">
+              <select id="orderStatusFilter" class="admin-input">
+                <option value="">كل الحالات</option>
+                <option value="new">جديد</option>
+                <option value="confirmed">تم التأكيد</option>
+                <option value="shipped">تم الشحن</option>
+                <option value="delivered">تم التسليم</option>
+                <option value="cancelled">ملغي</option>
+              </select>
+            </div>
+          </div>
+          <div class="admin-card table-card">
+            <div class="table-wrap">
+              <table class="admin-table">
+                <thead><tr><th>رقم الطلب</th><th>التاريخ</th><th>العميل</th><th>المحافظة</th><th>الإجمالي</th><th>الحالة</th><th></th></tr></thead>
+                <tbody id="ordersTableBody"></tbody>
+              </table>
+            </div>
+            <div class="admin-empty" id="ordersEmpty" hidden>لا توجد طلبات مطابقة.</div>
+          </div>
+        </section>
+
+        <section class="admin-view" id="view-settings" hidden>
+          <form class="admin-card" id="storeForm">
+            <h2 class="card-title">بيانات المتجر</h2>
+            <div class="form-grid">
+              <div class="field">
+                <label for="stName">اسم المتجر</label>
+                <input id="stName" type="text">
+              </div>
+              <div class="field">
+                <label for="stTagline">الوصف تحت الاسم</label>
+                <input id="stTagline" type="text">
+              </div>
+              <div class="field">
+                <label for="stWhatsapp">واتساب (بالكود الدولي بدون +)</label>
+                <input id="stWhatsapp" type="text" inputmode="numeric" placeholder="201012345678">
+              </div>
+              <div class="field">
+                <label for="stPhone">رقم الهاتف</label>
+                <input id="stPhone" type="text" inputmode="numeric" placeholder="01012345678">
+              </div>
+              <div class="field">
+                <label for="stFreeShipping">حد الشحن المجاني (ج.م)</label>
+                <input id="stFreeShipping" type="number" min="0" step="50">
+              </div>
+              <div class="field">
+                <label for="stAnnouncement">شريط الإعلان</label>
+                <input id="stAnnouncement" type="text">
+              </div>
+            </div>
+            <div class="form-foot">
+              <button class="btn" type="submit">حفظ البيانات</button>
+            </div>
+          </form>
+
+          <div class="admin-card">
+            <h2 class="card-title">مصاريف الشحن</h2>
+            <p class="hint">عدّل سعر الشحن لكل محافظة. يصبح الشحن مجانيًا إذا تجاوز إجمالي الطلب الحد المحدد في بيانات المتجر.</p>
+            <div class="shipping-grid" id="shippingGrid"></div>
+            <div class="form-foot">
+              <button class="btn" type="button" id="saveShippingBtn">حفظ الشحن</button>
+            </div>
+          </div>
+
+          <form class="admin-card" id="passwordForm">
+            <h2 class="card-title">كلمة السر</h2>
+            <div class="form-grid">
+              <div class="field">
+                <label for="pwCurrent">كلمة السر الحالية</label>
+                <input id="pwCurrent" type="password" autocomplete="current-password">
+              </div>
+              <div class="field">
+                <label for="pwNext">كلمة السر الجديدة</label>
+                <input id="pwNext" type="password" autocomplete="new-password">
+              </div>
+              <div class="field">
+                <label for="pwConfirm">تأكيد كلمة السر</label>
+                <input id="pwConfirm" type="password" autocomplete="new-password">
+              </div>
+            </div>
+            <div class="form-foot">
+              <button class="btn" type="submit">تغيير كلمة السر</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-view" id="view-backup" hidden>
+          <div class="admin-card">
+            <h2 class="card-title">نسخة احتياطية</h2>
+            <p class="hint">نزّل نسخة من جميع بيانات المتجر والطلبات في ملف JSON، أو استعد نسخة سابقة. الصور غير مضمنة في النسخة، لذا احتفظ بمجلد الصور.</p>
+            <div class="backup-actions">
+              <button type="button" class="btn" id="exportBtn">تنزيل نسخة احتياطية</button>
+              <label class="btn btn-outline upload-btn">
+                استعادة نسخة
+                <input id="importFile" type="file" accept="application/json" hidden>
+              </label>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
